@@ -15,7 +15,7 @@
                 <tr>
                     <th>ID</th>
                     {% set list = [] %}                
-                    {% for key in data[0] %}
+                    {% for key in column_names %}
                     {% set list = list.append(key) %}
                     {% if key != 'id' %}
                         <th>{{key}}<i class="bi bi-x dropColumn" data-field="{{ key }}"></i></th>
