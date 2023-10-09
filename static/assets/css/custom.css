@@ -1,0 +1,4 @@
+.bg-primary-transparent-hover:hover {
+    background-color: var(--primary01)!important;
+    color: var(--primary-color)!important;
+}
