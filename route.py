@@ -1,7 +1,7 @@
 from flask import render_template
 from config import app
 import action
-from file_manager import file_manager
+from file_manager import file_manager, file_manager_table
 
 
 def route():
@@ -46,3 +46,11 @@ def route():
     @app.route('/file')
     def file():
         return file_manager()
+
+    @app.route('/file/table')
+    def file_table():
+        return file_manager_table()
+
+    @app.route('/signup')
+    def sign_up():
+        return render_template('authentication/sign-up.html')

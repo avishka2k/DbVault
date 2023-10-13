@@ -22,3 +22,7 @@ def file_manager():
         # Add SQL here (each table row count) issue #1
 
     return render_template('file-manager.html', table_info=table_info)
+
+
+def file_manager_table():
+    return render_template('file-manager-table.html')
