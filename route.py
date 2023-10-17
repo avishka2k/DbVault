@@ -54,3 +54,7 @@ def route():
     @app.route('/signup')
     def sign_up():
         return render_template('authentication/sign-up.html')
+
+    @app.route('/bin')
+    def bin_table():
+        return render_template('bin_tables.html')

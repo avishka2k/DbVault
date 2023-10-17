@@ -36,14 +36,27 @@ function updateValue() {
     });
 }
 
-$("#insertForm").submit(function(event){
-    event.preventDefault();
-    var name = $("#new_name").val();
-    var age = $("#new_age").val();
+//$("#insertForm").submit(function(event){
+//    event.preventDefault();
+//    var name = $("#new_name").val();
+//    var age = $("#new_age").val();
+//
+//    $.post("/insert", {
+//        new_name: name,
+//        new_age: age
+//    }, function(data){
+//        location.reload();
+//    });
+//});
 
+$('#insertForm').submit(function(e) {
+    e.preventDefault(); // Prevent the form from submitting normally
+
+    // Serialize the form data into a URL-encoded string
+    var formData = $(this).serialize();
+console.log(formData);
     $.post("/insert", {
-        new_name: name,
-        new_age: age
+        form_data: formData,
     }, function(data){
         location.reload();
     });
