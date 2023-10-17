@@ -16,9 +16,14 @@ def file_manager():
             f"information_schema.tables WHERE table_schema = 'adbms' AND table_name = '{table_name}'"
         )
         result = cursor.fetchone()
+        print('----------------')
+        print(result)
         if result:
             table_info.append(result)
-
+        cursor.execute(f"SELECT COUNT(*) AS table_items FROM {table_name}")
+        result = cursor.fetchone()
+        if result:
+            table_info[-1]['table_items'] = result['table_items']
         # Add SQL here (each table row count) issue #1
 
     return render_template('file-manager.html', table_info=table_info)
