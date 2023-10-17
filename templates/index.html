@@ -34,14 +34,26 @@
       </table>
 
       <h2>Insert New Data</h2>
+<!--      <form id="insertForm">-->
+<!--        <div class="form-group">-->
+<!--          <label for="new_name">Name</label>-->
+<!--          <input type="text" class="form-control" id="new_name" name="new_name" required />-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <label for="new_age">Age</label>-->
+<!--          <input type="number" class="form-control" id="new_age" name="new_age" required />-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary">Insert</button>-->
+<!--      </form>-->
+
       <form id="insertForm">
         <div class="form-group">
-          <label for="new_name">Name</label>
-          <input type="text" class="form-control" id="new_name" name="new_name" required />
-        </div>
-        <div class="form-group">
-          <label for="new_age">Age</label>
-          <input type="number" class="form-control" id="new_age" name="new_age" required />
+          {% for itemTd in list %}
+          {% if itemTd != 'id' %}
+          <label for="{{ itemTd }}">{{ itemTd }}</label>
+          <input type="text" class="form-control" id="{{ itemTd }}" name="{{ itemTd }}"/>
+          {% endif %}
+          {% endfor %}
         </div>
         <button type="submit" class="btn btn-primary">Insert</button>
       </form>
