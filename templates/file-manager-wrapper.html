@@ -10,6 +10,8 @@
     <link href="{{ url_for('static', filename='assets/css/icons.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='assets/libs/simplebar/simplebar.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='assets/css/custom.css') }}" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
   </head>
   <body>
     <div id="loader">
@@ -223,8 +225,8 @@
               </div>
               <div>
                 <ul class="list-unstyled files-main-nav" id="files-main-nav">
-                  <li class="active files-type">
-                    <a href="javascript:void(0)">
+                  <li class="files-type">
+                    <a href="/file">
                       <div class="d-flex align-items-center">
                         <div class="me-2">
                           <i class="ri-folder-2-line fs-16"></i>
@@ -235,7 +237,7 @@
                     </a>
                   </li>
                   <li class="files-type">
-                    <a href="javascript:void(0)">
+                    <a href="/file/table">
                       <div class="d-flex align-items-center">
                         <div class="me-2">
                           <i class="ri-star-s-line fs-16"></i>
@@ -245,7 +247,7 @@
                     </a>
                   </li>
                   <li class="files-type">
-                    <a href="javascript:void(0)">
+                    <a href="">
                       <div class="d-flex align-items-center">
                         <div class="me-2">
                           <i class="ri-share-forward-line fs-16"></i>
@@ -255,7 +257,7 @@
                     </a>
                   </li>
                   <li class="files-type">
-                    <a href="javascript:void(0)">
+                    <a href="/bin">
                       <div class="d-flex align-items-center">
                         <div class="me-2">
                           <i class="ri-delete-bin-line fs-16"></i>
@@ -328,6 +330,10 @@
             </div>
 
             {% block file_manager_content %}
+            {% endblock %}
+            {% block file_table_content %}
+            {% endblock %}
+            {% block file_bin_content %}
             {% endblock %}
 
             <div class="selected-file-details d-none">
@@ -508,5 +514,6 @@
     <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="{{ url_for('static', filename='assets/js/file-action.js') }}"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
   </body>
 </html>

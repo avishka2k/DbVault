@@ -21,6 +21,12 @@
             <div class="modal-body">
               <label for="create-folder1" class="form-label">Folder Name</label>
               <input type="text" class="form-control" id="create-folder1" placeholder="Folder Name" />
+              <label for="create-folder1" class="form-label">Columns</label>
+              <select class="form-select">
+                {% for index in range(5) %}
+                <option value="{{ loop.index }}">{{ loop.index }}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-sm btn-icon btn-light" data-bs-dismiss="modal">
@@ -235,8 +241,9 @@
     </div>
     <div class="row mb-3">
       {% for folder in table_info %}
+      {% if folder.TABLE_NAME != 'recycle_bin' %}
       <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
-        <div class="card border custom-card shadow-none card_click" data-tablename="{{ folder.table_name }}" data-tablesize="{{ folder.data_length_mb }}">
+        <div class="card border custom-card shadow-none card_click" data-tablename="{{ folder.TABLE_NAME }}" data-tablesize="{{ folder.data_length_mb }}">
           <div class="card-body bg-primary-transparent-hover">
             <div class="mb-4 folder-svg-container d-flex flex-wrap justify-content-between align-items-top">
               <div>
@@ -265,7 +272,7 @@
               </div>
             </div>
             <p class="fs-14 fw-semibold mb-1 lh-1">
-              <a href="javascript:void(0);">{{ folder.table_name }}</a>
+              <a href="javascript:void(0);">{{ folder.TABLE_NAME }}</a>
             </p>
             <div class="d-flex align-items-center justify-content-between flex-wrap">
               <div>
@@ -278,6 +285,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
       {% endfor %}
       <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6">
         <div class="card border custom-card shadow-none">
