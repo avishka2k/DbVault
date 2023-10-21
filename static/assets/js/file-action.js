@@ -4,13 +4,16 @@ $(document).ready(function(){
         $(".selected-file-details").removeClass("d-none");
         var tablename = $(this).data('tablename');
         var tablesize = $(this).data('tablesize');
+        var tabledate = $(this).data('tabledate');
 
         $(".file-details-title").text(tablename);
         $(".file-details-size").text(tablesize);
+        $(".file-details-date").text(tabledate);
     });
 
     $('.card_click').on('dblclick', function(){
-        window.location.replace("/file/table");
+        var table_name = $(this).data('tablename');
+        window.location.href = '/table/' + table_name;
     });
 
 
@@ -56,5 +59,26 @@ $(document).ready(function(){
         $('.table-row-active').removeClass('table-active');
         $(this).addClass('table-active');
     });
+
+//    $('').click(function() {
+//        Swal.fire({
+//            title: 'Are you sure?',
+//            text: "You won't be able to revert this!",
+//            icon: 'warning',
+//            showCancelButton: true,
+//            confirmButtonColor: '#3085d6',
+//            cancelButtonColor: '#d33',
+//            confirmButtonText: 'Yes, delete it!'
+//        }).then((result) => {
+//            if (result.isConfirmed) {
+//                Swal.fire(
+//                    'Deleted!',
+//                    'Your file has been deleted.',
+//                    'success'
+//                )
+//            }
+//        })
+//    });
+
 });
 
