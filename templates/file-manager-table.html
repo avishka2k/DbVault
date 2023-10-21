@@ -4,23 +4,33 @@
 <div class="file-manager-folders">
   <div class="p-3 file-folders-container" id="file-folders-container">
     <div class="d-flex mb-3 align-items-center justify-content-between">
-      <p class="mb-0 fw-semibold fs-14">Recents</p>
-      <button class="btn btn-sm btn-primary">Add New</button>
+      <p class="mb-0 fw-semibold fs-14">{{ table_name |upper}}</p>
+      <div class="gap-2 d-flex">
+        <i class="ti ti-star fs-22"></i>
+        <button class="btn btn-sm btn-light insertCol">Add Column</button>
+        <button class="btn btn-sm btn-primary insertRow" data-bs-effect="effect-scale">Add Row</button>
+      </div>
     </div>
     <div class="row">
       <div class="col-xl-12">
         <div class="table-responsive border border-bottom-0">
-          <table class="table text-nowrap table-hover">
+            <table class="table text-nowrap table-hover">
             <thead>
               <tr>
-                <th scope="col">File Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Size</th>
-                <th scope="col">Date Modified</th>
-                <th scope="col">Action</th>
+                <th scope="col">ID</th>
+                  {% set list = [] %} {% for key in column_names %} {% set list = list.append(key) %} {% if key != 'id' %}
+                  <th scope="col" class="column-name" data-bs-effect="effect-scale" data-bs-toggle="modal" data-cellname="{{ key }}">{{key}}<span class="dropColumn-confirm" data-field="{{ key }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                  </span></th>
+                  {% endif %} {% endfor %}
+                <th scope="col">Actions</th>
               </tr>
             </thead>
+            {% if data|length > 0 %}
             <tbody class="files-list">
+            {% set tablelimit = 20 %} {% for row in data %} {% if loop.index <= tablelimit %}
               <tr class="table-row-active active">
                 <th scope="row">
                   <div class="d-flex align-items-center">
@@ -32,101 +42,29 @@
                     <div>VID-00292312-SPK823.mp4</div>
                   </div>
                 </th>
-                <td>Videos</td>
-                <td>87MB</td>
-                <td>22,Nov 2022</td>
+                {% for itemTd in list %} {% if itemTd != 'id' %}
+                <td class="editable" data-bs-effect="effect-scale" data-bs-toggle="modal" data-id="{{ row.id }}" data-field="{{ itemTd }}">{{ row[itemTd] }}</td>
+                {% endif %} {% endfor %}
                 <td>
                   <div class="hstack gap-2 fs-15">
                     <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i class="ri-delete-bin-line"></i></a>
+                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill dropRow" data-field="{{ row.id }}"><i class="ri-delete-bin-line"></i></a>
                   </div>
                 </td>
               </tr>
-              <tr class="table-row-active">
-                <th scope="row">
-                  <div class="d-flex align-items-center">
-                    <div class="me-2">
-                      <span class="avatar avatar-xs">
-                        <img src="{{ url_for('static', filename='assets/images/media/file-manager/1.png') }}" alt="" />
-                      </span>
-                    </div>
-                    <div>IMG-09123878-SPK734.jpeg</div>
-                  </div>
-                </th>
-                <td>Images</td>
-                <td>1.35MB</td>
-                <td>25,Nov 2022</td>
-                <td>
-                  <div class="hstack gap-2 fs-15">
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i class="ri-delete-bin-line"></i></a>
-                  </div>
-                </td>
-              </tr>
-              <tr class="table-row-active">
-                <th scope="row">
-                  <div class="d-flex align-items-center">
-                    <div class="me-2">
-                      <span class="avatar avatar-xs">
-                        <img src="{{ url_for('static', filename='assets/images/media/file-manager/1.png') }}" alt="" />
-                      </span>
-                    </div>
-                    <div>AMB-2012.zip</div>
-                  </div>
-                </th>
-                <td>Archives</td>
-                <td>422KB</td>
-                <td>23,Nov 2022</td>
-                <td>
-                  <div class="hstack gap-2 fs-15">
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i class="ri-delete-bin-line"></i></a>
-                  </div>
-                </td>
-              </tr>
-              <tr class="table-row-active">
-                <th scope="row">
-                  <div class="d-flex align-items-center">
-                    <div class="me-2">
-                      <span class="avatar avatar-xs">
-                        <img src="{{ url_for('static', filename='assets/images/media/file-manager/1.png') }}" alt="" />
-                      </span>
-                    </div>
-                    <div>AUD-1002-2012.mp3</div>
-                  </div>
-                </th>
-                <td>Archives</td>
-                <td>422KB</td>
-                <td>23,Nov 2022</td>
-                <td>
-                  <div class="hstack gap-2 fs-15">
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i class="ri-delete-bin-line"></i></a>
-                  </div>
-                </td>
-              </tr>
-              <tr class="table-row-active">
-                <th scope="row">
-                  <div class="d-flex align-items-center">
-                    <div class="me-2">
-                      <span class="avatar avatar-xs">
-                        <img src="{{ url_for('static', filename='assets/images/media/file-manager/1.png') }}" alt="" />
-                      </span>
-                    </div>
-                    <div>Document-02.pdf</div>
-                  </div>
-                </th>
-                <td>Documents</td>
-                <td>1.69MB</td>
-                <td>2,Dec 2022</td>
-                <td>
-                  <div class="hstack gap-2 fs-15">
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill btn_delete"><i class="ri-delete-bin-line"></i></a>
-                  </div>
-                </td>
-              </tr>
+            {% endif %} {% endfor %}
             </tbody>
+                {% else %}
+            <tbody>
+            <tr>
+            <td colspan="5">
+                <div class="">
+                    No data.
+                </div>
+            </td>
+            </tr>
+            </tbody>
+          {% endif %}
             <tfoot>
               <tr>
                 <td colspan="5">
@@ -150,10 +88,96 @@
               </tr>
             </tfoot>
           </table>
+
         </div>
       </div>
     </div>
   </div>
 </div>
-{% endblock %}
+<div class="modal fade"  id="editModal">
+    <div class="modal-dialog modal-dialog-centered text-center" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">Message Preview</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-start">
+                <input type="hidden" id="edit_id" value="" />
+                <input type="hidden" id="edit_field" value="" />
+                <input type="text" class="form-control" id="edit_value" value="" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="updateValue()" >Save changes</button> <button class="btn btn-light" data-bs-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal fade"  id="editColName">
+    <div class="modal-dialog modal-dialog-centered text-center" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">Edit Column Name</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-start">
+                <input type="text" class="form-control" id="column_name" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="updateColName()" >Save changes</button> <button class="btn btn-light" data-bs-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="insertRowModal">
+    <div class="modal-dialog modal-dialog-centered text-center" role="document">
+        <div class="modal-content modal-content-demo">
+          <form id="insertRowForm">
+            <div class="modal-header">
+                <h6 class="modal-title">Add New Record</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-start">
+              <div class="form-group">
+                {% for itemTd in list %}
+                {% if itemTd != 'id' %}
+                <label for="{{ itemTd }}">{{ itemTd }}</label>
+                <input type="text" class="form-control" id="{{ itemTd }}" name="{{ itemTd }}"/>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save changes</button> <button type="button" class="btn btn-light" data-bs-dismiss="modal" >Close</button>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade"  id="insertColModal">
+    <div class="modal-dialog modal-dialog-centered text-center" role="document">
+        <div class="modal-content modal-content-demo">
+            <form id="insertColForm">
+            <div class="modal-header">
+                <h6 class="modal-title">Insert data</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-start">
+                <div class="form-group">
+                  <label for="new_column_name">Column Name</label>
+                  <input type="text" class="form-control" id="new_column_name" name="new_column_name" required />
+                </div>
+                <div class="form-group">
+                  <label for="new_column_type">Column Type</label>
+                  <select class="form-control" id="new_column_type" name="new_column_type" required>
+                    <option value="VARCHAR(255)">VARCHAR</option>
+                    <option value="INT(15)">INT</option>
+                  </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save changes</button> <button class="btn btn-light" data-bs-dismiss="modal" >Close</button>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
