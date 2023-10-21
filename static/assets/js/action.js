@@ -13,12 +13,29 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-    $(".editablerow").click(function(){
+    $(".column-name").click(function(){
         var value = $(this).text();
+        $("#column_name").val(value);
 
-        $("#edit_value").val(value);
+        $("#editColName").modal('show');
+    });
+});
 
-        $("#editRowModal").modal('show');
+$(document).ready(function(){
+    $(".insertRow").click(function(){
+        $("#insertRowModal").modal('show');
+    });
+});
+
+$(document).ready(function(){
+    $(".insertCol").click(function(){
+        $("#insertColModal").modal('show');
+    });
+});
+
+$(document).ready(function(){
+    $(".column-name").click(function(){
+        $("#editColName").modal('show');
     });
 });
 
@@ -27,7 +44,7 @@ function updateValue() {
     var field = $("#edit_field").val();
     var value = $("#edit_value").val();
 
-    $.post("/edit/" + cell_id, {
+    $.post("/edit_cell/" + cell_id, {
         field: field,
         value: value
     }, function(data){
@@ -36,33 +53,68 @@ function updateValue() {
     });
 }
 
-//$("#insertForm").submit(function(event){
-//    event.preventDefault();
-//    var name = $("#new_name").val();
-//    var age = $("#new_age").val();
-//
-//    $.post("/insert", {
-//        new_name: name,
-//        new_age: age
-//    }, function(data){
-//        location.reload();
-//    });
-//});
+function updateColName() {
+    var col_name = $("#column_name").val();
 
-$('#insertForm').submit(function(e) {
-    e.preventDefault(); // Prevent the form from submitting normally
-
-    // Serialize the form data into a URL-encoded string
-    var formData = $(this).serialize();
-console.log(formData);
-    $.post("/insert", {
-        form_data: formData,
+    $.post("/updateColName", {
+        value: col_name
     }, function(data){
+        $("#editColName").modal('hide');
+        location.reload();
+    });
+}
+
+$(document).ready(function(){
+    $(".dropTable-confirm").click(function(){
+        var tableName = $(this).data('drop_table');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your Table has been deleted.',
+                    'success'
+                )
+                $.post("/drop_table", {
+                    table_name: tableName,
+                }, function(){
+                    location.reload();
+                });
+            }
+        })
+    });
+});
+
+$("#addNewTable").submit(function(event){
+    event.preventDefault();
+    var table_name = $("#new_table_name").val();
+
+    $.post("/new_table", {
+        table_name: table_name,
+    }, function(){
         location.reload();
     });
 });
 
-$("#addColumnForm").submit(function(event){
+$('#insertRowForm').submit(function(e) {
+    e.preventDefault();
+    var formData = $(this).serialize();
+    console.log(formData);
+    $.post("/insert_row", {
+        form_data: formData,
+    }, function(){
+        location.reload();
+    });
+});
+
+$("#insertColForm").submit(function(event){
     event.preventDefault();
     var newColumnName = $("#new_column_name").val();
     var newColumnType = $("#new_column_type").val();
@@ -76,14 +128,30 @@ $("#addColumnForm").submit(function(event){
 });
 
 $(document).ready(function(){
-    $(".dropColumn").click(function(){
+    $(".dropColumn-confirm").click(function(){
         var columnName = $(this).data('field');
-
-        $.post("/dropCol", {
-            column_name: columnName,
-        }, function(){
-            location.reload();
-        });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your record has been deleted.',
+                    'success'
+                )
+                $.post("/dropCol", {
+                    column_name: columnName,
+                }, function(){
+                    location.reload();
+                });
+            }
+        })
     });
 });
 
@@ -91,11 +159,28 @@ $(document).ready(function(){
     $(".dropRow").click(function(){
         var rowid = $(this).data('field');
 
-        $.post("/dropRow", {
-            rowid: rowid,
-        }, function(){
-            location.reload();
-        });
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your record has been deleted.',
+                    'success'
+                )
+                $.post("/dropRow", {
+                    rowid: rowid,
+                }, function(){
+                    location.reload();
+                });
+            }
+        })
     });
 });
 // not work
