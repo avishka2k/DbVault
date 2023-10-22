@@ -68,10 +68,12 @@ $("#addNewTable").submit(function(event){
     event.preventDefault();
     var table_name = $("#new_table_name").val();
     var initial_column = $("#initial_column").val();
+    var relationship = $("#relationship").val();
 
     $.post("/new_table", {
         table_name: table_name,
         initial_column: initial_column,
+        relationship: relationship,
     }, function(){
         location.reload();
     });
