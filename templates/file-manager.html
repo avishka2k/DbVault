@@ -4,7 +4,7 @@
 <div class="file-manager-folders">
   <div class="d-flex p-3 flex-wrap gap-2 align-items-center justify-content-between border-bottom">
     <div>
-      <h6 class="fw-semibold mb-0">Folders</h6>
+      <h6 class="fw-semibold mb-0">Folders {{resultcount}}</h6>
     </div>
     <div class="d-flex gap-2">
       <button id="folders-close-btn" class="d-sm-none d-block btn btn-icon btn-sm btn-danger-light">
@@ -12,8 +12,8 @@
       </button>
       <button class="btn btn-sm btn-primary d-flex align-items-center justify-content-center btn-wave waves-light" data-bs-toggle="modal" data-bs-target="#create-folder"><i class="ri-add-circle-line align-middle me-1"></i>Create Folder</button>
       <div class="modal fade" id="create-folder" tabindex="-1" aria-labelledby="create-folder" data-bs-keyboard="false" aria-hidden="true">
+        <form id="addNewTable">
         <div class="modal-dialog modal-dialog-centered">
-          <form id="addNewTable">
           <div class="modal-content">
             <div class="modal-header">
               <h6 class="modal-title" id="staticBackdropLabel">Create Folder</h6>
@@ -22,12 +22,8 @@
             <div class="modal-body">
               <label for="new_table_name" class="form-label">Folder Name</label>
               <input type="text" class="form-control" id="new_table_name" placeholder="Folder Name" required/>
-              <label for="create-folder1" class="form-label">Columns</label>
-              <select class="form-select" id="create-folder1">
-                {% for index in range(5) %}
-                <option value="{{ loop.index }}">{{ loop.index }}</option>
-                {% endfor %}
-              </select>
+              <label for="initial_column" class="form-label">Initial Column</label>
+              <input type="text" class="form-control" id="initial_column" value="Name" placeholder="Column Name" required/>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-sm btn-icon btn-light" data-bs-dismiss="modal">
@@ -36,8 +32,8 @@
               <button type="submit" class="btn btn-sm btn-success">Create</button>
             </div>
           </div>
-          </form>
         </div>
+        </form>
       </div>
     </div>
   </div>
@@ -271,7 +267,7 @@
     </div>
     <div class="d-flex mb-3 align-items-center justify-content-between">
       <p class="mb-0 fw-semibold fs-14">Recents</p>
-      <button class="btn btn-sm btn-primary-light">View All</button>
+      <a href="/recent" class="btn btn-sm btn-primary-light">View All</a>
     </div>
     <div class="row">
       <div class="col-xl-12">
@@ -279,14 +275,15 @@
           <table class="table text-nowrap table-hover">
             <thead>
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col">About</th>
                 <th scope="col">Folder Name</th>
-                <th scope="col">File Count</th>
-                <th scope="col">Date Created</th>
+                <th scope="col">Action Date</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
+            {% if recents_data|length > 0 %}
             <tbody class="files-list">
+            {% for recents in recents_data %}
               <tr>
                 <th scope="row">
                   <div class="d-flex align-items-center">
@@ -295,21 +292,30 @@
                         <img src="{{ url_for('static', filename='assets/images/media/file-manager/1.png') }}" alt="" />
                       </span>
                     </div>
-                    <div>VID-00292312-SPK823.mp4</div>
+                    <div>{{ recents.file_name }}</div>
                   </div>
                 </th>
-                <td>Videos</td>
-                <td>87MB</td>
-                <td>22,Nov 2022</td>
+                <td>{{ recents.folder_name }}</td>
+                <td>{{ recents.date_time }}</td>
                 <td>
                   <div class="hstack gap-2 fs-15">
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill"><i class="ri-delete-bin-line"></i></a>
+                    <a href="/table/{{ recents.folder_name }}" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
                   </div>
                 </td>
               </tr>
-
+            {% endfor %}
             </tbody>
+            {% else %}
+            <tbody>
+            <tr>
+            <td colspan="5">
+                <div class="">
+                    No Recent.
+                </div>
+            </td>
+            </tr>
+            </tbody>
+            {% endif %}
             <tfoot>
               <tr>
                 <td colspan="5">
