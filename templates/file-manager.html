@@ -24,6 +24,15 @@
               <input type="text" class="form-control" id="new_table_name" placeholder="Folder Name" required/>
               <label for="initial_column" class="form-label">Initial Column</label>
               <input type="text" class="form-control" id="initial_column" value="Name" placeholder="Column Name" required/>
+              <label for="relationship" class="form-label">Relationship</label>
+              <select class="form-select" id="relationship" aria-label="Default select example">
+                <option value="">No Relation</option>
+                {% for folder in table_info %}
+                {% if folder.TABLE_NAME != 'recycle_bin' and folder.TABLE_NAME != 'recents' %}
+                <option value="{{folder.TABLE_NAME}}">{{folder.TABLE_NAME}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-sm btn-icon btn-light" data-bs-dismiss="modal">

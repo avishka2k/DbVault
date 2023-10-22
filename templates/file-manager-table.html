@@ -17,14 +17,13 @@
             <table class="table text-nowrap table-hover">
             <thead>
               <tr>
-                <th scope="col">Item</th>
-                  {% set list = [] %} {% for key in column_names %} {% set list = list.append(key) %} {% if key != 'id' %}
+                  {% set list = [] %} {% for key in column_names %} {% set list = list.append(key) %}
                   <th scope="col" class="column-name" data-bs-effect="effect-scale" data-bs-toggle="modal" data-cellname="{{ key }}">{{key}}<span class="dropColumn-confirm" data-field="{{ key }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
                   </span></th>
-                  {% endif %} {% endfor %}
+                  {% endfor %}
                 <th style="width: 10%;" scope="col">Actions</th>
               </tr>
             </thead>
@@ -32,18 +31,13 @@
             <tbody class="files-list">
             {% set tablelimit = 20 %} {% for row in data %} {% if loop.index <= tablelimit %}
               <tr class="table-row-active active">
-                <th scope="row">
-                  <div class="d-flex align-items-center">
-                    <div>{{loop.index}}</div>
-                  </div>
-                </th>
-                {% for itemTd in list %} {% if itemTd != 'id' %}
-                <td class="editable" data-bs-effect="effect-scale" data-bs-toggle="modal" data-id="{{ row.id }}" data-field="{{ itemTd }}">{{ row[itemTd] }}</td>
-                {% endif %} {% endfor %}
+                {% for itemTd in list %}
+                <td class="editable" data-bs-effect="effect-scale" data-bs-toggle="modal" data-id="{{ row[table_name + 'Id'] }}" data-field="{{ itemTd }}">{{ row[itemTd] }}</td>
+                {% endfor %}
                 <td>
                   <div class="hstack gap-2 fs-15">
                     <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>
-                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill dropRow" data-field="{{ row.id }}"><i class="ri-delete-bin-line"></i></a>
+                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger-transparent rounded-pill dropRow" data-field="{{ row[table_name + 'Id'] }}"><i class="ri-delete-bin-line"></i></a>
                   </div>
                 </td>
               </tr>
@@ -128,12 +122,12 @@
         <div class="modal-content modal-content-demo">
           <form id="insertRowForm">
             <div class="modal-header">
-                <h6 class="modal-title">Add New Record</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                <h6 class="modal-title">Add New Record</h6><button type="button" aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-start">
               <div class="form-group">
                 {% for itemTd in list %}
-                {% if itemTd != 'id' %}
+                {% if itemTd != table_name + 'Id' %}
                 <label for="{{ itemTd }}">{{ itemTd }}</label>
                 <input type="text" class="form-control" id="{{ itemTd }}" name="{{ itemTd }}"/>
                 {% endif %}
@@ -153,7 +147,7 @@
         <div class="modal-content modal-content-demo">
             <form id="insertColForm">
             <div class="modal-header">
-                <h6 class="modal-title">Insert data</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                <h6 class="modal-title">Insert data</h6><button type="button" aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-start">
                 <div class="form-group">

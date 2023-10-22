@@ -1,140 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flask Table</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-  </head>
-  <body>
-    <div class="container mt-5">
-      <h2>Sample Table</h2>
-      <table class="table table-bordered">
-        <thead class="table-light">
-          <tr>
-            <th>ID</th>
-            {% set list = [] %} {% for key in column_names %} {% set list = list.append(key) %} {% if key != 'id' %}
-            <th>{{key}}<i class="bi bi-x dropColumn" data-field="{{ key }}"></i></th>
-            {% endif %} {% endfor %}
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% set tablelimit = 20 %} {% for row in data %} {% if loop.index <= tablelimit %}
-          <tr>
-            <td>{{ loop.index }}</td>
-            {% for itemTd in list %} {% if itemTd != 'id' %}
-            <td class="editable" data-id="{{ row.id }}" data-field="{{ itemTd }}">{{ row[itemTd] }}</td>
-            {% endif %} {% endfor %}
-            <td><i class="bi bi-pencil-square editablerow" data-field="{{ row.id }}"></i> <i class="bi bi-trash dropRow" data-field="{{ row.id }}"></i></td>
-          </tr>
-          {% endif %} {% endfor %}
-        </tbody>
-      </table>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--  <head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+<!--    <title>Flask Table</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />-->
+<!--  </head>-->
+<!--  <body>-->
+<!--    <div class="container mt-5">-->
+<!--      <h2>Sample Table</h2>-->
+<!--      <table class="table table-bordered">-->
+<!--        <thead class="table-light">-->
+<!--          <tr>-->
+<!--            <th>ID</th>-->
+<!--            {% set list = [] %} {% for key in column_names %} {% set list = list.append(key) %} {% if key != 'id' %}-->
+<!--            <th>{{key}}<i class="bi bi-x dropColumn" data-field="{{ key }}"></i></th>-->
+<!--            {% endif %} {% endfor %}-->
+<!--            <th>Actions</th>-->
+<!--          </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--          {% set tablelimit = 20 %} {% for row in data %} {% if loop.index <= tablelimit %}-->
+<!--          <tr>-->
+<!--            <td>{{ loop.index }}</td>-->
+<!--            {% for itemTd in list %} {% if itemTd != 'id' %}-->
+<!--            <td class="editable" data-id="{{ row.id }}" data-field="{{ itemTd }}">{{ row[itemTd] }}</td>-->
+<!--            {% endif %} {% endfor %}-->
+<!--            <td><i class="bi bi-pencil-square editablerow" data-field="{{ row.id }}"></i> <i class="bi bi-trash dropRow" data-field="{{ row.id }}"></i></td>-->
+<!--          </tr>-->
+<!--          {% endif %} {% endfor %}-->
+<!--        </tbody>-->
+<!--      </table>-->
 
-      <h2>Insert New Data</h2>
+<!--      <h2>Insert New Data</h2>-->
+<!--&lt;!&ndash;      <form id="insertForm">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;          <label for="new_name">Name</label>&ndash;&gt;-->
+<!--&lt;!&ndash;          <input type="text" class="form-control" id="new_name" name="new_name" required />&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;          <label for="new_age">Age</label>&ndash;&gt;-->
+<!--&lt;!&ndash;          <input type="number" class="form-control" id="new_age" name="new_age" required />&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <button type="submit" class="btn btn-primary">Insert</button>&ndash;&gt;-->
+<!--&lt;!&ndash;      </form>&ndash;&gt;-->
+
 <!--      <form id="insertForm">-->
 <!--        <div class="form-group">-->
-<!--          <label for="new_name">Name</label>-->
-<!--          <input type="text" class="form-control" id="new_name" name="new_name" required />-->
-<!--        </div>-->
-<!--        <div class="form-group">-->
-<!--          <label for="new_age">Age</label>-->
-<!--          <input type="number" class="form-control" id="new_age" name="new_age" required />-->
+<!--          {% for itemTd in list %}-->
+<!--          {% if itemTd != 'id' %}-->
+<!--          <label for="{{ itemTd }}">{{ itemTd }}</label>-->
+<!--          <input type="text" class="form-control" id="{{ itemTd }}" name="{{ itemTd }}"/>-->
+<!--          {% endif %}-->
+<!--          {% endfor %}-->
 <!--        </div>-->
 <!--        <button type="submit" class="btn btn-primary">Insert</button>-->
 <!--      </form>-->
 
-      <form id="insertForm">
-        <div class="form-group">
-          {% for itemTd in list %}
-          {% if itemTd != 'id' %}
-          <label for="{{ itemTd }}">{{ itemTd }}</label>
-          <input type="text" class="form-control" id="{{ itemTd }}" name="{{ itemTd }}"/>
-          {% endif %}
-          {% endfor %}
-        </div>
-        <button type="submit" class="btn btn-primary">Insert</button>
-      </form>
+<!--      <h2>Add New Column</h2>-->
+<!--      <form id="addColumnForm">-->
+<!--        <div class="form-group">-->
+<!--          <label for="new_column_name">Column Name</label>-->
+<!--          <input type="text" class="form-control" id="new_column_name" name="new_column_name" required />-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <label for="new_column_type">Column Type</label>-->
+<!--          <select class="form-control" id="new_column_type" name="new_column_type" required>-->
+<!--            <option value="VARCHAR(255)">VARCHAR</option>-->
+<!--            <option value="INT(15)">INT</option>-->
+<!--          </select>-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary">Add Column</button>-->
+<!--      </form>-->
 
-      <h2>Add New Column</h2>
-      <form id="addColumnForm">
-        <div class="form-group">
-          <label for="new_column_name">Column Name</label>
-          <input type="text" class="form-control" id="new_column_name" name="new_column_name" required />
-        </div>
-        <div class="form-group">
-          <label for="new_column_type">Column Type</label>
-          <select class="form-control" id="new_column_type" name="new_column_type" required>
-            <option value="VARCHAR(255)">VARCHAR</option>
-            <option value="INT(15)">INT</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Column</button>
-      </form>
+<!--      <form id="filterTable">-->
+<!--        <div class="form-group">-->
+<!--          <label for="new_column_type">Filter</label>-->
+<!--          <select class="form-control selectval" id="filter_table" name="filter_table">-->
+<!--            <option value="1">1</option>-->
+<!--            <option value="2">2</option>-->
+<!--            <option value="3">3</option>-->
+<!--          </select>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </div>-->
 
-      <form id="filterTable">
-        <div class="form-group">
-          <label for="new_column_type">Filter</label>
-          <select class="form-control selectval" id="filter_table" name="filter_table">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-        </div>
-      </form>
-    </div>
+<!--    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">-->
+<!--      <div class="modal-dialog" role="document">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header">-->
+<!--            <h5 class="modal-title" id="editModalLabel">Edit Value</h5>-->
+<!--            <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--              <span aria-hidden="true">&times;</span>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <div class="modal-body">-->
+<!--            <input type="hidden" id="edit_id" value="" />-->
+<!--            <input type="hidden" id="edit_field" value="" />-->
+<!--            <input type="text" class="form-control" id="edit_value" value="" />-->
+<!--          </div>-->
+<!--          <div class="modal-footer">-->
+<!--            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--            <button type="button" class="btn btn-primary" onclick="updateValue()">Save changes</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Edit Value</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" id="edit_id" value="" />
-            <input type="hidden" id="edit_field" value="" />
-            <input type="text" class="form-control" id="edit_value" value="" />
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="updateValue()">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--    <div class="modal fade" id="editRowModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">-->
+<!--      <div class="modal-dialog" role="document">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header">-->
+<!--            <h5 class="modal-title" id="editModalLabel">Edit Value</h5>-->
+<!--            <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--              <span aria-hidden="true">&times;</span>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <div class="modal-body">-->
+<!--            <input type="hidden" id="edit_id" value="" />-->
+<!--            <input type="hidden" id="edit_field" value="" />-->
+<!--            {% for itemTd in list %}-->
+<!--            <input type="text" class="form-control" id="edit_value" value="{{ itemTd }}" />-->
+<!--            {% endfor %}-->
+<!--          </div>-->
+<!--          <div class="modal-footer">-->
+<!--            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--            <button type="button" class="btn btn-primary" onclick="updateValue()">Save changes</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="modal fade" id="editRowModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Edit Value</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" id="edit_id" value="" />
-            <input type="hidden" id="edit_field" value="" />
-            {% for itemTd in list %}
-            <input type="text" class="form-control" id="edit_value" value="{{ itemTd }}" />
-            {% endfor %}
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="updateValue()">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="{{ url_for('static', filename='assets/js/action.js') }}"></script>
-  </body>
-</html>
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>-->
+<!--    <script src="{{ url_for('static', filename='assets/js/action.js') }}"></script>-->
+<!--  </body>-->
+<!--</html>-->
