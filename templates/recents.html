@@ -1,0 +1,132 @@
+{% extends "file-manager-wrapper.html" %}
+
+{% block file_recents_content %}
+<div class="file-manager-folders">
+  <div class="p-3 file-folders-container" id="file-folders-container">
+    <div class="d-flex mb-3 align-items-center justify-content-between">
+      <p class="mb-0 fw-semibold fs-14">Recents</p>
+      <div class="gap-2 d-flex">
+        <button class="btn btn-sm btn-light deleteAllRecent">Clear All</button>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <div id="grid-loading"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    <div class="row">-->
+<!--      <div class="col-xl-12">-->
+<!--        <div class="table-responsive border border-bottom-0">-->
+<!--          <table class="table text-nowrap table-hover">-->
+<!--            <thead>-->
+<!--              <tr>-->
+<!--                <th scope="col">About</th>-->
+<!--                <th scope="col">Folder Name</th>-->
+<!--                <th scope="col">Action Date</th>-->
+<!--                <th scope="col">Action</th>-->
+<!--              </tr>-->
+<!--            </thead>-->
+<!--            {% if recents_data|length > 0 %}-->
+<!--            <tbody class="files-list">-->
+<!--            {% for recents in recents_data %}-->
+<!--              <tr>-->
+<!--                <th scope="row">-->
+<!--                  <div class="d-flex align-items-center">-->
+<!--                    <div class="me-2">-->
+<!--                      <span class="avatar avatar-xs">-->
+<!--                        <img src="{{ url_for('static', filename='assets/images/media/file-manager/1.png') }}" alt="" />-->
+<!--                      </span>-->
+<!--                    </div>-->
+<!--                    <div>{{ recents.file_name }}</div>-->
+<!--                  </div>-->
+<!--                </th>-->
+<!--                <td>{{ recents.folder_name }}</td>-->
+<!--                <td>{{ recents.date_time }}</td>-->
+<!--                <td>-->
+<!--                  <div class="hstack gap-2 fs-15">-->
+<!--                    <a href="/table/{{ recents.folder_name }}" class="btn btn-icon btn-sm btn-info-transparent rounded-pill"><i class="ri-eye-line"></i></a>-->
+<!--                  </div>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--            {% endfor %}-->
+<!--            </tbody>-->
+<!--            {% else %}-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--            <td colspan="5">-->
+<!--                <div class="">-->
+<!--                    No Recent.-->
+<!--                </div>-->
+<!--            </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--            {% endif %}-->
+<!--            <tfoot>-->
+<!--              <tr>-->
+<!--                <td colspan="5">-->
+<!--                  <nav aria-label="Page navigation">-->
+<!--                    <ul class="pagination justify-content-end mb-0">-->
+<!--                      <li class="page-item disabled">-->
+<!--                        <a class="page-link" href="javascript:void(0);">Previous</a>-->
+<!--                      </li>-->
+<!--                      <li class="page-item">-->
+<!--                        <a class="page-link" href="javascript:void(0);">1</a>-->
+<!--                      </li>-->
+<!--                      <li class="page-item">-->
+<!--                        <a class="page-link" href="javascript:void(0);">2</a>-->
+<!--                      </li>-->
+<!--                      <li class="page-item">-->
+<!--                        <a class="page-link" href="javascript:void(0);">Next</a>-->
+<!--                      </li>-->
+<!--                    </ul>-->
+<!--                  </nav>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--            </tfoot>-->
+<!--          </table>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+ $(document).ready(function () {
+        var tableData = JSON.parse('{{ recents_data | tojson | safe }}');
+
+        new gridjs.Grid({
+            columns: [{
+                name: "Name",
+                width: "150px",
+            }, {
+                name: "Folder Name",
+                width: "200px",
+            }, {
+                name: "Action Date",
+                width: "150px",
+            }, {
+                name: "Action",
+                width: "100px",
+                formatter: (cell) => gridjs.html(`<a class="text-primary" href='${cell}'>View</a>`)
+            }],
+            pagination: true,
+            search: true,
+            sort: true,
+            data: () => {
+            return new Promise(resolve => {
+                setTimeout(() =>
+                    resolve([
+                        {% for recents in recents_data %}
+                        ["{{ recents.file_name }}", "{{ recents.folder_name }}", "{{ recents.date_time }}", "/table/{{ recents.folder_name }}"],
+                        {% endfor %}
+                    ]), 2000);
+            });
+        }
+        }).render(document.getElementById("grid-loading"));
+    });
+</script>
+{% endblock %}
