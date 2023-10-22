@@ -3,6 +3,8 @@ import auth.action
 from config import app
 from auth import action
 from file_manager import file_manager, FileManager, add_new_table, drop_table
+from file_recent import file_recent, file_recent_delete_all
+from my_file import my_file
 
 file_list = FileManager()
 
@@ -21,7 +23,7 @@ def route():
     def new_table():
         return add_new_table()
 
-    @app.route('/drop_table', methods=['GET', 'POST'])
+    @app.route('/drop_table', methods=['POST'])
     def remove_table():
         return drop_table()
 
@@ -81,3 +83,16 @@ def route():
     def signin():
         return auth.action.signin()
 
+    # ------------ recents ---------------
+    @app.route('/recent', methods=['GET', 'POST'])
+    def recent():
+        return file_recent()
+
+    @app.route('/deleteAllRecent', methods=['POST'])
+    def recent_delete_all():
+        return file_recent_delete_all()
+
+    # ------------ my files ---------------
+    @app.route('/my_files', methods=['GET', 'POST'])
+    def my_file_all():
+        return my_file()
