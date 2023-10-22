@@ -64,40 +64,14 @@ function updateColName() {
     });
 }
 
-$(document).ready(function(){
-    $(".dropTable-confirm").click(function(){
-        var tableName = $(this).data('drop_table');
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Your Table has been deleted.',
-                    'success'
-                )
-                $.post("/drop_table", {
-                    table_name: tableName,
-                }, function(){
-                    location.reload();
-                });
-            }
-        })
-    });
-});
-
 $("#addNewTable").submit(function(event){
     event.preventDefault();
     var table_name = $("#new_table_name").val();
+    var initial_column = $("#initial_column").val();
 
     $.post("/new_table", {
         table_name: table_name,
+        initial_column: initial_column,
     }, function(){
         location.reload();
     });
@@ -183,6 +157,61 @@ $(document).ready(function(){
         })
     });
 });
+
+$(document).ready(function(){
+    $(".dropTable-confirm").click(function(){
+        var tableName = $(this).data('drop_table');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your Table has been deleted.',
+                    'success'
+                )
+                $.post("/drop_table", {
+                    table_name: tableName,
+                }, function(data){
+                    location.reload();
+                });
+            }
+        })
+    });
+});
+
+
+$(document).ready(function(){
+    $(".deleteAllRecent").click(function(){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your all recent has been deleted.',
+                    'success'
+                )
+                $.post("/deleteAllRecent", function(){
+                    location.reload();
+                });
+            }
+        })
+    });
+});
+
 // not work
 $(document).ready(function(){
 
