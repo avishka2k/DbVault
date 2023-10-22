@@ -1,6 +1,7 @@
 from config import mysql
 from flask import render_template, request
 from urllib.parse import parse_qs
+from triggers import create_insert_trigger, create_delete_trigger, create_update_trigger, create_alter_trigger
 
 mysql = mysql
 cursor = mysql.cursor(dictionary=True)
@@ -25,31 +26,36 @@ def file_manager():
         result = cursor.fetchone()
         if result:
             table_info[-1]['table_items'] = result['table_items']
-    return render_template('file-manager.html', table_info=table_info)
+
+    cursor.execute(f"SELECT * FROM recents")
+    recents_data = cursor.fetchall()
+
+    return render_template(
+        'file-manager.html',
+        table_info=table_info,
+        recents_data=recents_data,
+        resultcount=''
+    )
 
 
 def add_new_table():
     table_name = request.form['table_name']
+    column_name = request.form['initial_column']
 
     try:
-        cursor.execute(f'CREATE TABLE {table_name} (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT)')
-        mysql.commit()
-        create_trigger('Create New Record', table_name)
-        return "success"
-    except Exception as e:
-        return f'Something went wrong: {e}'
-
-
-def create_trigger(file_name, table_name):
-    try:
-        trigger_name = f'{table_name}_trigger'
         cursor.execute(f'''
-            CREATE TRIGGER {trigger_name} AFTER INSERT ON {table_name}
-            FOR EACH ROW
-            BEGIN
-                INSERT INTO recents(file_name, folder_name, date_time) VALUES({file_name}, '{table_name}', 
-                CURRENT_TIMESTAMP()); END; ''')
+            CREATE TABLE {table_name} (
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            {column_name} varchar(255)
+            )
+        ''')
         mysql.commit()
+        # create triggers
+        create_insert_trigger('Created New Record', table_name)
+        create_delete_trigger('Deleted Record', table_name)
+        create_update_trigger('Updated Record', table_name)
+        create_alter_trigger('Added New Column', table_name)
+        return "success"
     except Exception as e:
         return f'Something went wrong: {e}'
 
@@ -59,6 +65,7 @@ def drop_table():
     try:
         cursor.execute(f'DROP TABLE {table_name}')
         mysql.commit()
+        return "success"
     except Exception as e:
         return f'Something went wrong: {e}'
 
@@ -72,7 +79,11 @@ class FileManager:
             cursor.execute(f"SELECT * FROM {table_name}")
             data = cursor.fetchall()
             column_names = [column[0] for column in cursor.description]
-            return render_template('file-manager-table.html', data=data, column_names=column_names, table_name=table_name)
+            return render_template(
+                'file-manager-table.html',
+                data=data, column_names=column_names,
+                table_name=table_name
+            )
         except Exception as e:
             return f'Something went wrong: {e}'
 
