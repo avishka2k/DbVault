@@ -17,7 +17,7 @@
             <table class="table text-nowrap table-hover">
             <thead>
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col">Item</th>
                   {% set list = [] %} {% for key in column_names %} {% set list = list.append(key) %} {% if key != 'id' %}
                   <th scope="col" class="column-name" data-bs-effect="effect-scale" data-bs-toggle="modal" data-cellname="{{ key }}">{{key}}<span class="dropColumn-confirm" data-field="{{ key }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
@@ -25,7 +25,7 @@
                     </svg>
                   </span></th>
                   {% endif %} {% endfor %}
-                <th scope="col">Actions</th>
+                <th style="width: 10%;" scope="col">Actions</th>
               </tr>
             </thead>
             {% if data|length > 0 %}
@@ -34,12 +34,7 @@
               <tr class="table-row-active active">
                 <th scope="row">
                   <div class="d-flex align-items-center">
-                    <div class="me-2">
-                      <span class="avatar avatar-xs">
-                        <img src="{{ url_for('static', filename='assets/images/media/file-manager/1.png') }}" alt="" />
-                      </span>
-                    </div>
-                    <div>VID-00292312-SPK823.mp4</div>
+                    <div>{{loop.index}}</div>
                   </div>
                 </th>
                 {% for itemTd in list %} {% if itemTd != 'id' %}
@@ -54,7 +49,7 @@
               </tr>
             {% endif %} {% endfor %}
             </tbody>
-                {% else %}
+            {% else %}
             <tbody>
             <tr>
             <td colspan="5">
@@ -64,7 +59,7 @@
             </td>
             </tr>
             </tbody>
-          {% endif %}
+            {% endif %}
             <tfoot>
               <tr>
                 <td colspan="5">
